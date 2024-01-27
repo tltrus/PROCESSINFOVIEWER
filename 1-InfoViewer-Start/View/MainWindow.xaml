@@ -1,0 +1,426 @@
+﻿<Window x:Class="InfoViewer.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:InfoViewer.View" 
+        mc:Ignorable="d"
+        Title="ProCodding" Height="600" Width="1280" Closing="Window_Closing" Loaded="Window_Loaded">
+    <Grid Margin="5" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.8*"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions >
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <!-- Grid Column = 0 -->
+        <Grid Grid.Column="0" Margin="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="70"></RowDefinition>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.7*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Menu Height="25" VerticalAlignment="Top">
+                    <MenuItem Header="Home">
+                        <MenuItem Header="Settings"></MenuItem>
+                        <Separator />
+                        <MenuItem Header="Exit" Click="mnuExit_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="Controller">
+                    </MenuItem>
+                    <MenuItem Header="Statistica">
+                    </MenuItem>
+                    <MenuItem Header="Help" >
+                    </MenuItem>
+                </Menu>
+            </Grid>
+
+            <!-- Logo + Controller select + Info -->
+            <Grid Grid.Row="1">
+                <Grid Margin="0,0,0,5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Logo -->
+                    <Grid Grid.Column="0">
+                        <Image HorizontalAlignment="Center" VerticalAlignment="Bottom" Height="47" Source="pack://application:,,,/Media/ABB.png"/>
+                    </Grid>
+                    <!-- Controller select -->
+                    <Grid Grid.Column="1">
+                        <StackPanel Orientation="Vertical" Margin="0" VerticalAlignment="Bottom">
+                            <Label Content="Controller:"/>
+                            <ComboBox x:Name="cbox_Controllers" ItemsSource="{Binding Controllers}"
+                              HorizontalAlignment="Left" IsEditable="False"
+                              Text="Please select a Controller"                              
+                              Width="180"/>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <Grid Grid.Column="2" VerticalAlignment="Bottom">
+                        <ToggleButton Margin="0,0,10,0"
+                                      IsEnabled="{Binding ControllerIsSelected}"
+                                      Command="{Binding BtnConnectClick}"
+                                      CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}"
+                                      Style="{StaticResource ConnectButtonStyle}">
+                            <StackPanel HorizontalAlignment="Center">
+                                <TextBlock Text="Connect" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding ConnectionStatus}" HorizontalAlignment="Center" FontStyle="Italic" FontSize="10" Margin="0,5,0,0"/>
+                            </StackPanel>
+                        </ToggleButton>
+                    </Grid>
+                </Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+            </Grid>
+
+            <!-- Controller Info -->
+            <Grid Grid.Row="2" Margin="0,10,0,0">
+                <Border Margin="0" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                    <DockPanel Margin="5">
+                        <TextBlock Text="{Binding Path=ControllerInfo.InfoIP, StringFormat='IP: {0}'}"  Padding="0"/>
+                        <TextBlock Text="{Binding Path=ControllerInfo.InfoSystemName, StringFormat='System name: {0}'}" Padding="20,0,0,0"/>
+                        <TextBlock Text="{Binding Path=ControllerInfo.InfoRobotWare, StringFormat='RobotWare: {0}'}" Padding="20,0,0,0"/>
+                    </DockPanel>
+                </Border>
+            </Grid>
+
+            <!-- Layout -->
+            <Grid Grid.Row="3">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition ></ColumnDefinition>
+                        <ColumnDefinition ></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <ListBox ItemsSource="{Binding Controllers}" />
+                    </Grid>
+
+                    <Grid Grid.Column="1" Margin="5, 20, 5, 0">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Grid Grid.Row="0" Margin="0,20,0,0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                            </Grid>
+                        </Grid>
+
+                    </Grid>
+                </Grid>
+            </Grid>
+
+            <!--  -->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                    <Grid Margin="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.5*"></ColumnDefinition>
+                            <ColumnDefinition></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                            <RowDefinition></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Column="0" Grid.Row="0" Content="Mode:" Margin="2"/>
+                        <TextBox Grid.Column="1" Grid.Row="0" Text="{Binding OperationPanelViewModel.ModeStatus}" IsReadOnly="True" VerticalAlignment="Center" BorderBrush="{x:Null}" Margin="2"/>
+                        <Label Grid.Column="0" Grid.Row="1" Content="Drives:" Margin="2"/>
+                        <TextBox Grid.Column="1" Grid.Row="1" Text="{Binding OperationPanelViewModel.MotorsStatus}" IsReadOnly="True" VerticalAlignment="Center" BorderBrush="{x:Null}" Margin="2"/>
+                        <Label Grid.Column="0" Grid.Row="2" Content="Speed:" Margin="2"/>
+                        <DockPanel Grid.Column="1" Grid.Row="2">
+                            <TextBox Text="{Binding OperationPanelViewModel.SpeedRatio}" IsReadOnly="True" VerticalAlignment="Center" Width="40"  Margin="2" BorderBrush="{x:Null}" />
+                            <Button Command="{Binding OperationPanelViewModel.SpeedUpdateClick}" IsEnabled="{Binding ControllerIsConnected}" Content="Update" Margin="2" Width="57" />
+                        </DockPanel>
+                        <Label Grid.Column="0" Grid.Row="3" Content="Program execution:" Margin="2"/>
+                        <ToggleButton Grid.Column="1" Grid.Row="3" x:Name="button" Background="#FFE2E2E2" Margin="2"
+                                          IsChecked="{Binding OperationPanelViewModel.BtnProgrExecIsChecked}"
+                                          IsEnabled="{Binding ControllerIsConnected}"
+                                          Content="{Binding OperationPanelViewModel.ProgramStatus}"
+                                          Command="{Binding OperationPanelViewModel.ProgrExecClick}"
+                                          CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}">
+                            <ToggleButton.Style>
+                                <Style TargetType="ToggleButton">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding OperationPanelViewModel.DataChanged}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard x:Name="sb1">
+                                                    <BeginStoryboard.Storyboard>
+                                                        <Storyboard AutoReverse="True" RepeatBehavior="Forever">
+                                                            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" >
+                                                                <EasingColorKeyFrame KeyTime="0:0:1" Value="Yellow">
+                                                                    <EasingColorKeyFrame.EasingFunction>
+                                                                        <QuinticEase EasingMode="EaseInOut"/>
+                                                                    </EasingColorKeyFrame.EasingFunction>
+                                                                </EasingColorKeyFrame>
+                                                            </ColorAnimationUsingKeyFrames>
+                                                        </Storyboard>
+                                                    </BeginStoryboard.Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <StopStoryboard BeginStoryboardName="sb1"/>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ToggleButton.Style>
+                        </ToggleButton>
+                        <Button Grid.Column="1" Grid.Row="4" x:Name="BtnPPtoMain" Content="PP to Main" Margin="2"
+                                Command="{Binding OperationPanelViewModel.PPtoMainClick}" IsEnabled="{Binding ControllerIsConnected}"
+                                ToolTip="Перевести программный указатель к началу Главной программы"/>
+                    </Grid>
+
+                </Border>
+
+                <Border Grid.Column="1" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                    <Grid Margin="5">
+                        <StackPanel>
+                            <Label Content="Pointers position:"/>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <ItemsControl ItemsSource="{Binding PointersViewModel.PointerRadioButtonsTaskSelect}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <RadioButton Content="{Binding Text}" 
+                                                         IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                            <ListView ItemsSource="{Binding PointersViewModel.PointersCollection}" FontSize="11">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn DisplayMemberBinding="{Binding PointerType}" Width="Auto">Pointer</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Task}" Width="Auto">Task</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Module}" Width="Auto">Module</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Routine}" Width="Auto">Routine</GridViewColumn>
+                                        <GridViewColumn DisplayMemberBinding="{Binding Row}" Width="Auto">Row</GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Grid Column = 1 -->
+        <Grid Grid.Column="2" Margin="0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="0.5*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <!-- IO Monitoring + Variables Monitoring -->
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <!-- IO Monitoring-->
+                <Border Grid.Row="0" Margin="0" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0" Content="IO status:" HorizontalAlignment="Left" FontWeight="Bold"/>
+
+                        <DockPanel Grid.Row="1" Margin="0,5,0,5">
+                            <Button x:Name="BtnAddIOtoMonitorListView" Content="+ IO" 
+                                    IsEnabled="{Binding ControllerIsConnected}" 
+                                    Style="{StaticResource StatusButtonStyle}" 
+                                    />
+                            <ToggleButton x:Name="BtnIOMonitorOn" Content="Monitoring" 
+                                          IsChecked="{Binding IOAddViewModel.BtnIOMonitorOnIsChecked}" 
+                                          Command="{Binding BtnIOMonitorClick}" 
+                                          CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}" 
+                                          IsEnabled="{Binding ControllerIsConnected}"
+                                          Style="{StaticResource StatusButtonStyle}" />
+                            <Button x:Name="BtnIOMonListLoad" Content="Load" 
+                                    Command="{Binding IOAddViewModel.LoadIOFromFileClick}" 
+                                    IsEnabled="{Binding ControllerIsConnected}"
+                                    Style="{StaticResource StatusButtonStyle}" />
+                            <Button x:Name="BtnIOMonitorClear" Content="Clear" 
+                                    Command="{Binding IOAddViewModel.ClearIOListViewClick}" 
+                                    IsEnabled="{Binding ControllerIsConnected}" 
+                                    Style="{StaticResource StatusButtonStyle}" 
+                                    />
+                        </DockPanel>
+
+                        <DataGrid Grid.Row="2" x:Name="dgIOs" 
+                                  ItemsSource="{Binding IOAddViewModel.IoListView}" 
+                                  FontSize="11" AutoGenerateColumns="False" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn IsReadOnly="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="x" 
+                                                        Command="{Binding ElementName=dgIOs, Path=DataContext.IOAddViewModel.RemoveIOItemFromListView}" 
+                                                        CommandParameter="{Binding}"
+                                                        VerticalAlignment="Center" 
+                                                        Padding="5,0,5,0"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Source" Binding="{Binding Source, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Value" Binding="{Binding Status, Mode=TwoWay}" Width="Auto" IsReadOnly="False">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style>
+                                            <Setter Property="FrameworkElement.HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                    </Grid>
+                </Border>
+
+                <!-- Variables Monitoring-->
+                <Border Grid.Column="1" Margin="0" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="0" Content="Variables status:" Grid.Column="2" FontWeight="Bold"/>
+                        <DockPanel Grid.Row="1" Margin="0, 5, 0, 5">
+                            <Button x:Name="BtnAddVartoMonitorListView" Content="+ VAR" IsEnabled="{Binding ControllerIsConnected}" Style="{StaticResource StatusButtonStyle}" />
+                            <ToggleButton Name="BtnVarMonitorOn" Content="Monitoring" IsChecked="{Binding VarAddViewModel.BtnVarMonitorOnIsChecked}" Command="{Binding BtnVarMonitorClick}" CommandParameter="{Binding IsChecked,RelativeSource={RelativeSource Self}}" IsEnabled="{Binding ControllerIsConnected}" Style="{StaticResource StatusButtonStyle}" />
+                            <Button x:Name="BtnVarMonListLoad" Content="Load" Command="{Binding VarAddViewModel.LoadVarsFromFileClick}" IsEnabled="{Binding ControllerIsConnected}" Style="{StaticResource StatusButtonStyle}"/>
+                            <Button Name="BtnVarMonitorClear" Content="Clear" Command="{Binding VarAddViewModel.ClearVarsListViewClick}" IsEnabled="{Binding ControllerIsConnected}" Style="{StaticResource StatusButtonStyle}"/>
+                        </DockPanel>
+
+                        <DataGrid Grid.Row="2" x:Name="dgVars"
+                                  ItemsSource="{Binding VarAddViewModel.VarsListView}" 
+                                  FontSize="11" AutoGenerateColumns="False" CanUserAddRows="False" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn IsReadOnly="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="x" 
+                                                        Command="{Binding ElementName=dgVars, Path=DataContext.VarAddViewModel.RemoveVarItemFromListView}" 
+                                                        CommandParameter="{Binding}"
+                                                        VerticalAlignment="Center" 
+                                                        Padding="5,0,5,0"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Source" Binding="{Binding Source, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Name" Binding="{Binding Name, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Type" Binding="{Binding Type, Mode=TwoWay}" Width="Auto" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Value" Binding="{Binding Status, Mode=TwoWay}" Width="Auto" IsReadOnly="False">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style>
+                                            <Setter Property="FrameworkElement.HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+
+                        </DataGrid>
+                    </Grid>
+                </Border>
+
+            </Grid>
+
+            <!-- Журнал ошибок -->
+            <Border Grid.Row="1" Margin="0" Background="GhostWhite" BorderBrush="Gainsboro" BorderThickness="1">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Журнал ошибок + Кнопка Обновить -->
+                    <Grid Grid.Row="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="50*"></ColumnDefinition>
+                            <ColumnDefinition Width="296*"/>
+                            <ColumnDefinition Width="347*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Column="0" Content="Last 4 messages:"  FontWeight="Bold" Grid.ColumnSpan="3" Margin="0,0,347,0"/>
+                        <Button Grid.Column="2" Content="Elogs" IsEnabled="{Binding ControllerIsConnected}" Margin="3,3,3,3" Padding="50,3,50,3" />
+                    </Grid>
+
+                    <!-- Таблица с ошибками -->
+                    <ListView x:Name="lvActiveLog" Grid.Row="1" ItemsSource="{Binding ElogViewModel.ActiveEventsListView}" Margin="0,0,0.4,0">
+                        <ListView.Resources>
+                            <!-- Этот стиль позволяет окрашивать строки сообщений Error в красный цвет -->
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Type}" Value="Error">
+                                        <Setter Property="Background" Value="LightPink" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Type}" Width="Auto">Type</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Code}" Width="Auto">Code</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Title}" Width="Auto">Title</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Category}" Width="Auto">Category</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Date}" Width="Auto">Date</GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Path=Time}" Width="Auto">Time</GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Border>
+
+        </Grid>
+
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <StatusBar>
+                <StatusBarItem Content="IRC5:"/>
+                <StatusBarItem Content="{Binding StatusBarMessage}"/>
+                <Separator/>
+                <StatusBarItem Content="User:"/>
+                <StatusBarItem Content="{Binding CurrentUser.Name}"/>
+                
+                <StatusBarItem Content="{Binding CurrentTime}" HorizontalAlignment="Right"/>
+            </StatusBar>
+        </Grid>
+        
+    </Grid>
+</Window>
